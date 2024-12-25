@@ -111,7 +111,7 @@ class Strategy:
 
     # 启动把手
     def run(self):
-        self.send_feishu("【系统消息】TD9指标监控启动")
+        # self.send_feishu("【系统消息】TD9指标监控启动")
         [lg.info(f"启动TD9监控 Dex:币安 Symbol:{a}") for a in self.symbols]
         lg.info(f"启动参数：interval={self.interval}")
         lg.info(f"启动参数：slp={self.slp}")

@@ -137,7 +137,7 @@ class Strategy:
 
     # 启动把手
     def run(self):
-        self.send_feishu("【系统消息】成交量指标监控启动")
+        # self.send_feishu("【系统消息】成交量指标监控启动")
 
         self.init_system()
         while True:
