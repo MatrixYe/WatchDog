@@ -137,6 +137,7 @@ def main():
         'up': conf['RSI']['up'],
         'down': conf['RSI']['down'],
         'n': conf['RSI']['n']
+        'feishu': conf['RSI']['feishu']
     }
     lg.info(json.dumps(args, indent=4))
     st = Strategy(**args)
