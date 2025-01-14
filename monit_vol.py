@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-#
 # -------------------------------------------------------------------------------
-# Name:         monit_vol
+# Name:         bigvol
 # Author:       yepeng
-# Date:         2024/12/23 11:42
-# Description:
+# Date:         2024/9/11 01:58
+# Description:监控成交量异动
 # -------------------------------------------------------------------------------
 import json
 import time
@@ -14,14 +14,6 @@ import requests as r
 from utils.logger import MyLogger
 from utils.util import load_toml_config
 
-# -*- coding: utf-8 -*-#
-# -------------------------------------------------------------------------------
-# Name:         bigvol
-# Author:       yepeng
-# Date:         2024/9/11 01:58
-# Description:
-# -------------------------------------------------------------------------------
-# 监控成交量异动
 
 lg = MyLogger.new()
 
