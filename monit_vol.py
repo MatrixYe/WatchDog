@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-#
 # -------------------------------------------------------------------------------
-# Name:         monit_vol 
+# Name:         monit_vol
 # Author:       yepeng
 # Date:         2024/12/23 11:42
-# Description: 
+# Description:
 # -------------------------------------------------------------------------------
 import json
 import time
@@ -38,16 +38,16 @@ def rd(v: float, d: int = 4):
 class Strategy:
     def __init__(self, **kwargs):
         # 目标 比如BTCUSDT
-        self.symbols: list = kwargs.get('symbols')
+        self.symbols: list = kwargs.get('symbols')  # type: ignore
         # k线周期，比如1d
-        self.interval: str = kwargs.get('interval')
+        self.interval: str = kwargs.get('interval')  # type: ignore
         # 飞书消息推送机器人地址
-        self.feishu: str = kwargs.get('feishu')
+        self.feishu: str = kwargs.get('feishu')  # type: ignore
         # 定时循环查询
-        self.slp: int = kwargs.get('slp')
+        self.slp: int = kwargs.get('slp')  # type: ignore
         # 关键参数，交易量倍数阈值，如2.0表示交易量超过2.5倍就报警
-        self.x: float = kwargs.get('x')
-        self.n: int = kwargs.get('n')
+        self.x: float = kwargs.get('x')  # type: ignore
+        self.n: int = kwargs.get('n')  # type: ignore
 
     # 消息推送，飞书
     def send_feishu(self, msg: str):
@@ -68,7 +68,8 @@ class Strategy:
 
     # 获取k线数据，从币安接口
     def get_kline(self, symbol: str, interval: str, limit: int):
-        url = f'https://data-api.binance.vision/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}'
+        url = f'https://data-api.binance.vision/api/v3/klines?symbol={
+            symbol}&interval={interval}&limit={limit}'
         resp = r.get(url)
         if not resp:
             return None
@@ -114,7 +115,8 @@ class Strategy:
         volume = row['volume']
         vol_ma = row['vol_ma']
         vol_ratio = row['vol_ratio']
-        msg = f"标的:{symbol} 周期{self.interval} 成交量:{volume} 平均成交量:{vol_ma} 取样区间{self.n} 交易量变动倍数:{rd(vol_ratio, 2)}G"
+        msg = f"标的:{symbol} 周期{self.interval} 成交量:{volume} 平均成交量:{
+            vol_ma} 取样区间{self.n} 交易量变动倍数:{rd(vol_ratio, 2)}G"
         lg.info(msg)
         if vol_ratio >= self.x:
             lg.info(msg)

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-#
 # -------------------------------------------------------------------------------
-# Name:         monit_rsi 
+# Name:         monit_rsi
 # Author:       yepeng
 # Date:         2024/12/26 11:23
-# Description: 
+# Description:
 # -------------------------------------------------------------------------------
 
 import json
@@ -32,17 +32,17 @@ def rd(v: float, d: int = 4):
 class Strategy:
     def __init__(self, **kwargs):
         # 目标 比如BTCUSDT
-        self.symbols: list = kwargs.get('symbols')
+        self.symbols: list = kwargs.get('symbols')  # type: ignore
         # k线周期，比如4h
-        self.interval: str = kwargs.get('interval')
+        self.interval: str = kwargs.get('interval')  # type: ignore
         # 飞书消息推送机器人地址
-        self.feishu: str = kwargs.get('feishu')
+        self.feishu: str = kwargs.get('feishu')  # type: ignore
         # 定时循环查询
-        self.slp: int = kwargs.get('slp')
+        self.slp: int = kwargs.get('slp')  # type: ignore
         # 关键参数，RSI 预警的上下阈值
-        self.up: int = kwargs.get('up')
-        self.down: int = kwargs.get('down')
-        self.n: int = kwargs.get('n')
+        self.up: int = kwargs.get('up')  # type: ignore
+        self.down: int = kwargs.get('down')  # type: ignore
+        self.n: int = kwargs.get('n')  # type: ignore
 
     # 消息推送，飞书
     def send_feishu(self, msg: str):
@@ -63,7 +63,8 @@ class Strategy:
 
     # 获取k线数据，从币安接口
     def get_kline(self, symbol: str, interval: str, limit: int):
-        url = f'https://data-api.binance.vision/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}'
+        url = f'https://data-api.binance.vision/api/v3/klines?symbol={
+            symbol}&interval={interval}&limit={limit}'
         resp = r.get(url)
         if not resp:
             return None

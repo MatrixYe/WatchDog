@@ -8,6 +8,8 @@
 
 import json
 import time
+from tkinter import NO
+from typing import NoReturn
 
 import pandas as pd
 import requests as r
@@ -21,11 +23,11 @@ lg = MyLogger.new()
 # noinspection PyMethodMayBeStatic
 class Strategy:
     def __init__(self, **kwargs):
-        self.symbols: [] = kwargs.get('symbols')
-        self.interval: str = kwargs.get('interval')
-        self.feishu: str = kwargs.get('feishu')
-        self.slp: int = kwargs.get('slp')
-        self.side: str = kwargs.get('side')
+        self.symbols: list = kwargs.get('symbols')  # type: ignore
+        self.interval: str = kwargs.get('interval')  # type: ignore
+        self.feishu: str = kwargs.get('feishu')  # type: ignore
+        self.slp: int = kwargs.get('slp')  # type: ignore
+        self.side: str | None = kwargs.get('side')
 
     # 消息推送，飞书
     def send_feishu(self, msg: str):
@@ -46,7 +48,8 @@ class Strategy:
 
     # 获取k线数据，从币安接口
     def get_kline(self, symbol: str, interval: str, limit: int):
-        url = f'https://data-api.binance.vision/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}'
+        url = f'https://data-api.binance.vision/api/v3/klines?symbol={
+            symbol}&interval={interval}&limit={limit}'
         resp = r.get(url)
         if not resp:
             return None
@@ -75,11 +78,13 @@ class Strategy:
 
         for i in range(4, len(df)):
             if df['close'][i] < df['close'][i - 4]:
-                df.loc[i, 'down'] = df.loc[i - 1, 'down'] + 1 if df.loc[i - 1, 'down'] >= 0 else 1
+                df.loc[i, 'down'] = df.loc[i - 1, 'down'] + \
+                    1 if df.loc[i - 1, 'down'] >= 0 else 1  # type: ignore
             else:
                 df.loc[i, 'down'] = 0
             if df['close'][i] > df['close'][i - 4]:
-                df.loc[i, 'up'] = df.loc[i - 1, 'up'] + 1 if df.loc[i - 1, 'up'] >= 0 else 1
+                df.loc[i, 'up'] = df.loc[i - 1, 'up'] + \
+                    1 if df.loc[i - 1, 'up'] >= 0 else 1  # type: ignore
             else:
                 df.loc[i, 'up'] = 0
 
@@ -95,17 +100,21 @@ class Strategy:
         last_up = df_td['up'].iloc[-1]
         price = df_td['close'].iloc[-1]
         if last_up > 0:
-            lg.info(f"TD9指标: symbol:{symbol} interval:{self.interval} price:{price} up:{last_up} ")
+            lg.info(f"TD9指标: symbol:{symbol} interval:{
+                    self.interval} price:{price} up:{last_up} ")
         if last_down > 0:
-            lg.info(f"TD9指标: symbol:{symbol} interval:{self.interval} price:{price} down:{last_down} ")
+            lg.info(f"TD9指标: symbol:{symbol} interval:{
+                    self.interval} price:{price} down:{last_down} ")
 
         if last_up in [9, 13] and (self.side == 'all' or self.side == 'up'):
-            msg = f"【TD异动】symbol:{symbol} interval:{self.interval} price:{price} TD up={last_up} => Sell"
+            msg = f"【TD异动】symbol:{symbol} interval:{
+                self.interval} price:{price} TD up={last_up} => Sell"
             lg.info(msg)
             self.send_feishu(msg)
 
         if last_down in [9, 13] and (self.side == 'all' or self.side == 'down'):
-            msg = f"【TD异动】symbol:{symbol} interval:{self.interval} price:{price},TD down={last_down} => Buy"
+            msg = f"【TD异动】symbol:{symbol} interval:{
+                self.interval} price:{price},TD down={last_down} => Buy"
             lg.info(msg)
             self.send_feishu(msg)
 
@@ -130,7 +139,7 @@ class Strategy:
         # self.handle_symbol('SOLUSDT')
 
 
-def main():
+def main() -> NoReturn:
     conf = load_toml_config()
 
     config = {
